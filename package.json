@@ -1,0 +1,42 @@
+{
+    "name": "react-test-1",
+    "version": "1.0.0",
+    "description": "",
+    "main": "server.js",
+    "engines": {
+        "node": "11.6.0",
+        "yarn": "1.12.3"
+    },
+    "scripts": {
+        "dev": "nodemon server.js --watch server --exec babel-node --presets=@babel/preset-env",
+        "build": "next build",
+        "start": "NODE_ENV=production nodemon server.js --watch server --exec babel-node --presets=@babel/preset-env",
+        "heroku-postbuild": "yarn build",
+        "push": "git push origin master && git push heroku master"
+    },
+    "keywords": [],
+    "author": "Ashwanth A R",
+    "license": "ISC",
+    "dependencies": {
+        "@babel/core": "^7.2.2",
+        "@babel/node": "^7.2.2",
+        "@babel/preset-env": "^7.2.3",
+        "axios": "^0.18.0",
+        "cors": "^2.8.5",
+        "dotenv": "^6.2.0",
+        "express": "^4.16.4",
+        "express-session": "^1.15.6",
+        "mongoose": "^5.4.4",
+        "next": "^7.0.2",
+        "next-redux-wrapper": "^2.1.0",
+        "nodemon": "^1.18.9",
+        "prop-types": "^15.6.2",
+        "pusher": "^2.2.0",
+        "pusher-js": "^4.3.1",
+        "react": "^16.7.0",
+        "react-dom": "^16.7.0",
+        "react-redux": "^6.0.0",
+        "react-virtualized": "^9.21.0",
+        "redux": "^4.0.1"
+    }
+}
