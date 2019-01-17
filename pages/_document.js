@@ -14,6 +14,11 @@ class MyDoc extends Document {
                         href="https://fonts.googleapis.com/css?family=Coiny"
                         rel="stylesheet"
                     />
+                    {/* Link Progress Bar CSS - NPROGRESS */}
+                    <link
+                        href="https://storage.googleapis.com/resource-book/nprogress.min.css"
+                        rel="stylesheet"
+                    />
                     {/* GLOBAL STYLES GO HERE */}
                     <style>{`
                         * {
