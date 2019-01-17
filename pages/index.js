@@ -1,5 +1,7 @@
 import withLayout from "../components/Layout";
 import { fCenter, fScreen, title, grid, smallText } from "../styles";
+import Router from "next/router";
+import { users as userIcons } from "../store";
 
 const s = {
     container: {
@@ -39,17 +41,10 @@ const s = {
     }
 };
 
-const userIcons = [
-    "aquaman",
-    "batman",
-    "flash",
-    "glantern",
-    "mmanhunter",
-    "superman",
-    "wwoman"
-];
-
 class Index extends React.Component {
+    navigateToChat = ({ user } = this.props) =>
+        user !== null ? Router.push("/chat") : null;
+
     render({ user, updateState } = this.props) {
         console.log(this.props);
         return (
@@ -69,7 +64,11 @@ class Index extends React.Component {
                         />
                     ))}
                 </div>
-                <div style={s.button} className="btn">
+                <div
+                    style={s.button}
+                    className="btn"
+                    onClick={() => this.navigateToChat()}
+                >
                     Log into the Channel
                 </div>
             </div>
@@ -77,4 +76,4 @@ class Index extends React.Component {
     }
 }
 
-export default withLayout(Index, "The League Channel");
+export default withLayout(Index, "Time for Justice");
