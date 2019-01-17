@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { connect } from "react-redux";
 import { updateState } from "../actions";
+import NProgress from "nprogress";
+import Router from "next/router";
 
 const mapStateFromProps = state => {
     return state;
@@ -13,6 +15,10 @@ const mapDispatchToProps = dispatch => {
         }
     };
 };
+
+Router.onRouteChangeStart = () => NProgress.start();
+Router.onRouteChangeComplete = () => NProgress.done();
+Router.onRouteChangeError = () => NProgress.error();
 
 const withLayout = (BaseComponent, pageTitle) => {
     class App extends React.Component {
