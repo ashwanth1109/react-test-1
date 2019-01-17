@@ -24,6 +24,8 @@ const s = {
 
 class Chat extends React.Component {
     async componentDidMount({ user, updateState } = this.props) {
+        console.log(process.env.PUSHER_APP_INSTANCE);
+        console.log(process.env.PUSHER_APP_TOKEN);
         if (user === null) {
             Router.push("/");
         } else {
