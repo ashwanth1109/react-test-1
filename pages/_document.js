@@ -37,7 +37,8 @@ class MyDoc extends Document {
                         width: "100vw",
                         height: "100vh",
                         backgroundColor: "#222",
-                        color: "#fff"
+                        color: "#fff",
+                        margin: "0"
                     }}
                 >
                     <Main />

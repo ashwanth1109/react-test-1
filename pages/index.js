@@ -46,7 +46,6 @@ class Index extends React.Component {
         user !== null ? Router.push("/chat") : null;
 
     render({ user, updateState } = this.props) {
-        console.log(this.props);
         return (
             <div style={s.container}>
                 <div style={s.info}>Choose your identity</div>

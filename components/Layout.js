@@ -5,6 +5,7 @@ import NProgress from "nprogress";
 import Router from "next/router";
 
 const mapStateFromProps = state => {
+    console.log(state);
     return state;
 };
 
