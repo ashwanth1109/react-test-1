@@ -14,6 +14,11 @@ export const title = {
     fontSize: "30px"
 };
 
+export const smallText = {
+    fontFamily: "Coiny, cursive",
+    fontSize: "16px"
+};
+
 export const grid = {
     display: "grid",
     gridRowGap: "30px",
