@@ -1,5 +1,5 @@
 import withLayout from "../components/Layout";
-import { fCenter, fScreen, title, grid } from "../styles";
+import { fCenter, fScreen, title, grid, smallText } from "../styles";
 
 const s = {
     container: {
@@ -16,47 +16,61 @@ const s = {
         ...grid
     },
     icon: {
-        width: "100px",
-        height: "100px",
+        width: "120px",
+        height: "120px",
         margin: "0 auto",
-        cursor: "pointer"
+        cursor: "pointer",
+        borderRadius: "60px"
+    },
+    selected: {
+        border: "3px solid #ffffff"
+    },
+    unselected: {
+        border: "3px solid #ffffff00"
+    },
+    button: {
+        padding: "10px 30px",
+        ...fCenter,
+        ...smallText,
+        border: "3px solid #fff",
+        borderRadius: "5px",
+        cursor: "pointer",
+        transition: "0.2s ease-in-out"
     }
 };
 
+const userIcons = [
+    "aquaman",
+    "batman",
+    "flash",
+    "glantern",
+    "mmanhunter",
+    "superman",
+    "wwoman"
+];
+
 class Index extends React.Component {
-    render() {
+    render({ user, updateState } = this.props) {
         console.log(this.props);
         return (
             <div style={s.container}>
                 <div style={s.info}>Choose your identity</div>
                 <div style={s.icons}>
-                    <img
-                        src="/static/aquaman.png"
-                        style={s.icon}
-                        alt="aquaman"
-                    />
-                    <img src="/static/batman.png" style={s.icon} alt="batman" />
-                    <img src="/static/flash.png" style={s.icon} alt="flash" />
-                    <img
-                        src="/static/glantern.png"
-                        style={s.icon}
-                        alt="green lantern"
-                    />
-                    <img
-                        src="/static/mmanhunter.png"
-                        style={s.icon}
-                        alt="martian manhunter"
-                    />
-                    <img
-                        src="/static/superman.png"
-                        style={s.icon}
-                        alt="superman"
-                    />
-                    <img
-                        src="/static/wwoman.png"
-                        style={s.icon}
-                        alt="wonder woman"
-                    />
+                    {userIcons.map((userIcon, id) => (
+                        <img
+                            key={id}
+                            src={`/static/${userIcon}.png`}
+                            style={{
+                                ...s.icon,
+                                ...(user === id ? s.selected : s.unselected)
+                            }}
+                            alt={userIcon}
+                            onClick={() => updateState(id, "UPDATE_USER")}
+                        />
+                    ))}
+                </div>
+                <div style={s.button} className="btn">
+                    Log into the Channel
                 </div>
             </div>
         );
