@@ -4,6 +4,11 @@ export const fCenter = {
     alignItems: "center"
 };
 
+export const center = {
+    justifyContent: "center",
+    alignItems: "center"
+};
+
 export const fScreen = {
     width: "100vw",
     height: "100vh"
@@ -23,4 +28,20 @@ export const grid = {
     display: "grid",
     gridRowGap: "30px",
     gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))"
+};
+
+export const row = {
+    display: "flex",
+    flexDirection: "row"
+};
+
+export const col = {
+    display: "flex",
+    flexDirection: "column"
+};
+
+export const bg = {
+    white: {
+        backgroundColor: "#fff"
+    }
 };
