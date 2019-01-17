@@ -20,6 +20,11 @@ class MyDoc extends Document {
                             margin: 0;
                             padding: 0;
                         }
+
+                        .btn:hover {
+                            background-color: #fff;
+                            color: #222;
+                        }
                     `}</style>
                 </Head>
                 <body
