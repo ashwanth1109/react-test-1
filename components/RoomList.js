@@ -1,11 +1,12 @@
 import React from "react";
-import { col } from "../styles";
+import { col, title, fCenter } from "../styles";
 import Header from "./Header";
 
 import { connect } from "react-redux";
 import RoomItem from "./RoomItem";
 
 import { AutoSizer, List } from "react-virtualized";
+import { updateState } from "../actions";
 
 const mapStateFromProps = state => {
     return {
@@ -13,10 +14,28 @@ const mapStateFromProps = state => {
     };
 };
 
+const mapDispatchToProps = dispatch => {
+    return {
+        updateModal: modal => {
+            updateState(dispatch, modal, "MODAL");
+        }
+    };
+};
+
 const s = {
     container: {
         flex: 3,
         ...col
+    },
+    addRoom: {
+        height: "60px",
+        width: "90%",
+        margin: "0 auto",
+        backgroundColor: "#fff",
+        ...title,
+        color: "#222",
+        ...fCenter,
+        cursor: "pointer"
     }
 };
 
@@ -29,7 +48,7 @@ class RoomList extends React.Component {
         );
     };
 
-    render({ rooms } = this.props) {
+    render({ rooms, updateModal } = this.props) {
         return (
             <div style={s.container}>
                 <Header>YOUR ROOMS</Header>
@@ -40,23 +59,22 @@ class RoomList extends React.Component {
                                 width={width}
                                 height={height}
                                 rowCount={rooms.length}
-                                rowHeight={150}
+                                rowHeight={104}
                                 rowRenderer={this.rowRenderer}
                                 style={{ outline: "none" }} // Important to enable if accessibility is required
                             />
                         )}
                     </AutoSizer>
                 </div>
-                <div
-                    style={{
-                        height: "10px",
-                        width: "100%",
-                        backgroundColor: "#fff"
-                    }}
-                />
+                <div style={s.addRoom} onClick={() => updateModal(true)}>
+                    Add Room +
+                </div>
             </div>
         );
     }
 }
 
-export default connect(mapStateFromProps)(RoomList);
+export default connect(
+    mapStateFromProps,
+    mapDispatchToProps
+)(RoomList);
