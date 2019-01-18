@@ -6,7 +6,6 @@ import { connect } from "react-redux";
 const mapStateFromProps = state => {
     console.log(state);
     return {
-        selected: state.room
         selected: state.room,
         currentUser: state.currentUser,
         rooms: state.rooms
@@ -15,8 +14,21 @@ const mapStateFromProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateRoom: payload => {
-            updateState(dispatch, payload, "UPDATE_ROOM");
+        updateRoom: async (id, rooms, currentUser) => {
+            updateState(dispatch, id, "UPDATE_ROOM");
+            try {
+                const messages = await currentUser.fetchMessages({
+                    roomId: rooms[id].id,
+                    initialId: 0,
+                    direction: "newer",
+                    limit: 100
+                });
+                updateState(dispatch, messages, "MESSAGES");
+                console.log(messages);
+            } catch (err) {
+                console.error(err);
+            }
+        },
         deleteRoom: async (roomId, currentUser) => {
             try {
                 console.log(`${roomId} is room id`);
@@ -41,7 +53,6 @@ const s = {
         ...center,
         border: "2px solid #fff",
         borderRadius: "10px",
-        cursor: "pointer"
         cursor: "pointer",
         position: "relative"
     },
@@ -66,6 +77,7 @@ const RoomItem = ({
     room,
     selected,
     id,
+    updateRoom,
     deleteRoom,
     currentUser,
     rooms
@@ -73,7 +85,7 @@ const RoomItem = ({
     return (
         <div
             style={{ ...s.container, ...(selected === id ? s.selected : null) }}
-            onClick={() => updateRoom(id)}
+            onClick={() => updateRoom(id, rooms, currentUser)}
         >
             <div style={s.roomName}>{room.name}</div>
             <div>Created by: {room.createdByUserId}</div>
