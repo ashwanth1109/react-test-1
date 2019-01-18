@@ -31,6 +31,7 @@ class ChatMessages extends React.Component {
     };
 
     render({ messages } = this.props) {
+        console.log(messages.length);
         return (
             <div style={s.container}>
                 <AutoSizer>
@@ -42,7 +43,7 @@ class ChatMessages extends React.Component {
                             rowCount={messages.length}
                             rowHeight={143}
                             rowRenderer={this.rowRenderer}
-                            scrollToRow={messages.length}
+                            scrollToIndex={messages.length - 1}
                         />
                     )}
                 </AutoSizer>

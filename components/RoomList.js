@@ -49,6 +49,7 @@ class RoomList extends React.Component {
     };
 
     render({ rooms, updateModal } = this.props) {
+        console.log(rooms);
         return (
             <div style={s.container}>
                 <Header>YOUR ROOMS</Header>
