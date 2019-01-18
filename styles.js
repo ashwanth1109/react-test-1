@@ -45,3 +45,13 @@ export const bg = {
         backgroundColor: "#fff"
     }
 };
+
+export const button = {
+    width: "100px",
+    height: "35px",
+    ...fCenter,
+    border: "3px solid #fff",
+    borderRadius: "10px",
+    ...smallText,
+    cursor: "pointer"
+};
