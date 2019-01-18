@@ -7,6 +7,9 @@ const mapStateFromProps = state => {
     console.log(state);
     return {
         selected: state.room
+        selected: state.room,
+        currentUser: state.currentUser,
+        rooms: state.rooms
     };
 };
 
@@ -14,6 +17,17 @@ const mapDispatchToProps = dispatch => {
     return {
         updateRoom: payload => {
             updateState(dispatch, payload, "UPDATE_ROOM");
+        deleteRoom: async (roomId, currentUser) => {
+            try {
+                console.log(`${roomId} is room id`);
+                await currentUser.deleteRoom({
+                    roomId: roomId
+                });
+                const rooms = currentUser.rooms;
+                updateState(dispatch, rooms, "ROOMS");
+            } catch (err) {
+                console.log(`Error in deleting room`);
+            }
         }
     };
 };
@@ -28,6 +42,8 @@ const s = {
         border: "2px solid #fff",
         borderRadius: "10px",
         cursor: "pointer"
+        cursor: "pointer",
+        position: "relative"
     },
     selected: {
         ...bg.white,
@@ -36,10 +52,24 @@ const s = {
     roomName: {
         fontSize: "24px",
         marginBottom: "10px"
+    },
+    delete: {
+        position: "absolute",
+        width: "30px",
+        height: "30px",
+        top: "0px",
+        right: "0px"
     }
 };
 
-const RoomItem = ({ room, selected, id, updateRoom }) => {
+const RoomItem = ({
+    room,
+    selected,
+    id,
+    deleteRoom,
+    currentUser,
+    rooms
+}) => {
     return (
         <div
             style={{ ...s.container, ...(selected === id ? s.selected : null) }}
@@ -47,6 +77,16 @@ const RoomItem = ({ room, selected, id, updateRoom }) => {
         >
             <div style={s.roomName}>{room.name}</div>
             <div>Created by: {room.createdByUserId}</div>
+            {selected === id ? (
+                <img
+                    src="/static/delete.svg"
+                    style={s.delete}
+                    alt="delete"
+                    onClick={() => {
+                        deleteRoom(room.id, currentUser);
+                    }}
+                />
+            ) : null}
         </div>
     );
 };
