@@ -40,7 +40,7 @@ const currentUser = (state = null, action) =>
     action.type === "CURRENT_USER" ? action.payload : state;
 
 const rooms = (state = [], action) =>
-    action.type === "ROOMS" ? action.payload : state;
+    action.type === "ROOMS" ? [...action.payload] : state;
 
 const currentRoom = (state = null, action) =>
     action.type === "CURRENT_ROOM" ? action.payload : state;

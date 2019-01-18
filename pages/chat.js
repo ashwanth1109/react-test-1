@@ -6,6 +6,8 @@ import { row, bg, col } from "../styles";
 import RoomList from "../components/RoomList";
 import UserList from "../components/UserList";
 import Modal from "../components/Modal";
+import ChatMessages from "../components/ChatMessages";
+import ChatInput from "../components/ChatInput";
 
 const s = {
     container: {
@@ -15,11 +17,13 @@ const s = {
     },
     userRoomList: {
         flex: 1,
-        ...col
+        ...col,
+        borderRight: "1px solid #fff"
     },
     chatMessages: {
         flex: 2.5,
-        ...bg.white
+        ...bg.white,
+        ...col
     }
 };
 
@@ -68,7 +72,8 @@ class Chat extends React.Component {
                         <UserList />
                     </div>
                     <div style={s.chatMessages}>
-                        <div />
+                        <ChatMessages />
+                        <ChatInput />
                     </div>
                     <Modal />
                 </div>
