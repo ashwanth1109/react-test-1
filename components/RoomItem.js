@@ -8,26 +8,19 @@ const mapStateFromProps = state => {
     return {
         selected: state.room,
         currentUser: state.currentUser,
-        rooms: state.rooms
+        rooms: state.rooms,
+        messages: state.messages
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        updateRoom: async (id, rooms, currentUser) => {
+        updateRoom: id => {
+            console.log(id);
             updateState(dispatch, id, "UPDATE_ROOM");
-            try {
-                const messages = await currentUser.fetchMessages({
-                    roomId: rooms[id].id,
-                    initialId: 0,
-                    direction: "newer",
-                    limit: 100
-                });
-                updateState(dispatch, messages, "MESSAGES");
-                console.log(messages);
-            } catch (err) {
-                console.error(err);
-            }
+        },
+        updateMessages: messages => {
+            updateState(dispatch, messages, "MESSAGES");
         },
         deleteRoom: async (roomId, currentUser) => {
             try {
@@ -73,37 +66,62 @@ const s = {
     }
 };
 
-const RoomItem = ({
-    room,
-    selected,
-    id,
-    updateRoom,
-    deleteRoom,
-    currentUser,
-    rooms
-}) => {
-    return (
-        <div
-            style={{ ...s.container, ...(selected === id ? s.selected : null) }}
-            onClick={() => updateRoom(id, rooms, currentUser)}
-        >
-            <div style={s.roomName}>{room.name}</div>
-            <div>Created by: {room.createdByUserId}</div>
-            {selected === id ? (
-                <img
-                    src="/static/delete.svg"
-                    style={s.delete}
-                    alt="delete"
-                    onClick={() => {
-                        deleteRoom(room.id, currentUser);
-                    }}
-                />
-            ) : null}
-        </div>
-    );
-};
+class RoomItem extends React.Component {
+    changeRoom = async ({ id, rooms, currentUser } = this.props) => {
+        this.props.updateRoom(id);
+        try {
+            const messages = await currentUser.fetchMessages({
+                roomId: rooms[id].id,
+                initialId: 0,
+                direction: "newer",
+                limit: 100
+            });
+            this.props.updateMessages(messages);
+            await currentUser.subscribeToRoom({
+                roomId: rooms[id].id,
+                messageLimit: 100,
+                hooks: {
+                    onMessage: message => {
+                        console.log(this.props);
+                        this.props.updateMessages([
+                            ...this.props.messages,
+                            message
+                        ]);
+                    }
+                }
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    render = ({ room, selected, id, deleteRoom, currentUser } = this.props) => {
+        return (
+            <div
+                style={{
+                    ...s.container,
+                    ...(selected === id ? s.selected : null)
+                }}
+                onClick={() => this.changeRoom()}
+            >
+                <div style={s.roomName}>{room.name}</div>
+                <div>Created by: {room.createdByUserId}</div>
+                {selected === id ? (
+                    <img
+                        src="/static/delete.svg"
+                        style={s.delete}
+                        alt="delete"
+                        onClick={() => {
+                            deleteRoom(room.id, currentUser);
+                        }}
+                    />
+                ) : null}
+            </div>
+        );
+    };
+}
 
 export default connect(
     mapStateFromProps,
     mapDispatchToProps
-)(React.memo(RoomItem));
+)(RoomItem);
