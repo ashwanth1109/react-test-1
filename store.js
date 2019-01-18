@@ -1,5 +1,31 @@
 import { combineReducers } from "redux";
 
+// ------------------------------------------------------------
+// data store
+// ------------------------------------------------------------
+export const users = [
+    "aquaman",
+    "batman",
+    "flash",
+    "green-lantern",
+    "martian-manhunter",
+    "superman",
+    "wonder-woman"
+];
+
+// ------------------------------------------------------------
+// members list default
+// ------------------------------------------------------------
+export const getDefaultValueForMembers = (initialMembersList = []) => {
+    for (let i = 0; i < 7; i++) {
+        initialMembersList.push(false);
+    }
+    return initialMembersList;
+};
+
+// ------------------------------------------------------------
+// reducers store
+// ------------------------------------------------------------
 const test = (state = 0, action) =>
     action.type === "TEST" ? action.payload : state;
 
@@ -22,6 +48,12 @@ const currentRoom = (state = null, action) =>
 const messages = (state = [], action) =>
     action.type === "MESSAGES" ? action.payload : state;
 
+const modal = (state = false, action) =>
+    action.type === "MODAL" ? action.payload : state;
+
+const membersToAddToRoom = (state = getDefaultValueForMembers(), action) =>
+    action.type === "MEMBERS_TO_ADD_TO_ROOM" ? [...action.payload] : state;
+
 export default combineReducers({
     test,
     user,
@@ -29,18 +61,7 @@ export default combineReducers({
     currentUser,
     rooms,
     currentRoom,
-    messages
+    messages,
+    modal,
+    membersToAddToRoom
 });
-
-// ------------------------------------------------------------
-// data store
-// ------------------------------------------------------------
-export const users = [
-    "aquaman",
-    "batman",
-    "flash",
-    "green-lantern",
-    "martian-manhunter",
-    "superman",
-    "wonder-woman"
-];
