@@ -2,7 +2,9 @@ import React from "react";
 
 const s = {
     container: {
-        flex: 2
+        flex: 2,
+        margin: "20px auto",
+        width: "90%"
     }
 };
 

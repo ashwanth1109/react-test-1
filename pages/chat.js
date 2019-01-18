@@ -5,6 +5,7 @@ import Router from "next/router";
 import { row, bg, col } from "../styles";
 import RoomList from "../components/RoomList";
 import UserList from "../components/UserList";
+import Modal from "../components/Modal";
 
 const s = {
     container: {
@@ -69,6 +70,7 @@ class Chat extends React.Component {
                     <div style={s.chatMessages}>
                         <div />
                     </div>
+                    <Modal />
                 </div>
             );
         }

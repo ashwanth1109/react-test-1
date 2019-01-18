@@ -21,8 +21,8 @@ const mapDispatchToProps = dispatch => {
 const s = {
     container: {
         width: "90%",
-        margin: "20px auto",
-        height: "100px",
+        margin: "10px auto",
+        height: "80px",
         ...col,
         ...center,
         border: "2px solid #fff",
