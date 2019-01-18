@@ -1,6 +1,28 @@
 import React from "react";
 import { row, button } from "../styles";
 
+import { connect } from "react-redux";
+
+const mapStateFromProps = state => {
+    return {
+        currentUser: state.currentUser,
+        room: state.rooms[state.room]
+    };
+};
+
+const mapDispatchToProps = dispatch => ({
+    addMessageToRoom: async (message, currentUser, roomId) => {
+        try {
+            await currentUser.sendMessage({
+                text: message,
+                roomId: roomId
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    }
+});
+
 const s = {
     container: {
         width: "100%",
@@ -24,6 +46,10 @@ const s = {
 };
 
 class ChatInput extends React.Component {
+    addMessage = ({ addMessageToRoom, currentUser, room } = this.props) => {
+        addMessageToRoom(this.refs.message.value, currentUser, room.id);
+        this.refs.message.value = "";
+    };
     render() {
         return (
             <div style={s.container}>
@@ -33,7 +59,11 @@ class ChatInput extends React.Component {
                     ref="message"
                     placeholder="Enter message . . ."
                 />
-                <div style={button} className="btn">
+                <div
+                    style={button}
+                    className="btn"
+                    onClick={() => this.addMessage()}
+                >
                     SEND
                 </div>
             </div>
@@ -41,4 +71,7 @@ class ChatInput extends React.Component {
     }
 }
 
-export default ChatInput;
+export default connect(
+    mapStateFromProps,
+    mapDispatchToProps
+)(ChatInput);
