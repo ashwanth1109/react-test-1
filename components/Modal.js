@@ -1,5 +1,5 @@
 import React from "react";
-import { fScreen, fCenter, col, smallText, row } from "../styles";
+import { fScreen, fCenter, col, smallText, row, button } from "../styles";
 
 import { connect } from "react-redux";
 import { updateState } from "../actions";
@@ -19,17 +19,49 @@ const mapDispatchToProps = dispatch => {
     return {
         closeModal: () => {
             updateState(dispatch, false, "MODAL");
-        },
-        toggleSelected: (id, members) => {
-            members[id] = !members[id];
-            updateState(dispatch, members, "MEMBERS_TO_ADD_TO_ROOM");
-        },
-        resetSelected: () => {
+            // reset selected icons
             updateState(
                 dispatch,
                 getDefaultValueForMembers(),
                 "MEMBERS_TO_ADD_TO_ROOM"
             );
+        },
+        toggleSelected: (id, members) => {
+            members[id] = !members[id];
+            updateState(dispatch, members, "MEMBERS_TO_ADD_TO_ROOM");
+        },
+        createRoom: async (
+            roomName,
+            currentUser,
+            selected,
+            user,
+            usersToBeAdded = []
+        ) => {
+            if (roomName !== "") {
+                usersToBeAdded.push(users[user]); // current user
+                for (let i = 0; i < selected.length; i++) {
+                    if (selected[i]) usersToBeAdded.push(users[i]);
+                }
+                try {
+                    const room = await currentUser.createRoom({
+                        name: roomName,
+                        addUserIds: usersToBeAdded
+                    });
+                    console.log(`Created room is ${room.name}`);
+                    const rooms = currentUser.rooms;
+                    updateState(dispatch, rooms, "ROOMS");
+                    // close modal
+                    updateState(dispatch, false, "MODAL");
+                    // reset selected icons
+                    updateState(
+                        dispatch,
+                        getDefaultValueForMembers(),
+                        "MEMBERS_TO_ADD_TO_ROOM"
+                    );
+                } catch (err) {
+                    console.error(err);
+                }
+            } else console.log("Room Name should not be an empty string");
         }
     };
 };
@@ -92,48 +124,23 @@ const s = {
         justifyContent: "center"
     },
     button: {
-        width: "100px",
-        height: "35px",
-        ...fCenter,
-        border: "3px solid #fff",
-        borderRadius: "10px",
-        margin: "20px 10px",
-        ...smallText,
-        cursor: "pointer"
+        ...button,
+        margin: "20px 10px"
     }
 };
 
 class Modal extends React.Component {
-    createRoom = async ({ currentUser, selected, closeModal } = this.props) => {
-        // create a room
-        // console.log(this.refs.roomName.value);
-        if (this.refs.roomName.value !== "") {
-            let usersToBeAdded = [];
-            usersToBeAdded.push(users[this.props.user]); // current user
-            for (let i = 0; i < selected.length; i++) {
-                if (selected[i]) usersToBeAdded.push(users[i]);
-            }
-            console.log(usersToBeAdded);
-            try {
-                const room = await currentUser.createRoom({
-                    name: this.refs.roomName.value,
-                    addUserIds: usersToBeAdded
-                });
-                console.log(`Created room is ${room.name}`);
-                closeModal();
-                // Need to update room list
-            } catch (err) {
-                console.log("Error creating new room");
-            }
-        } else console.log("Room name should not be empty");
-    };
-
-    cancelModalForm = ({ closeModal, resetSelected } = this.props) => {
-        closeModal();
-        resetSelected();
-    };
-
-    render({ modal, selected, toggleSelected } = this.props) {
+    render(
+        {
+            modal,
+            selected,
+            toggleSelected,
+            closeModal,
+            currentUser,
+            user,
+            createRoom
+        } = this.props
+    ) {
         if (modal) {
             return (
                 <div style={s.container}>
@@ -174,14 +181,21 @@ class Modal extends React.Component {
                             <div
                                 style={s.button}
                                 className="btn"
-                                onClick={() => this.cancelModalForm()}
+                                onClick={() => closeModal()}
                             >
                                 CANCEL
                             </div>
                             <div
                                 style={s.button}
                                 className="btn"
-                                onClick={() => this.createRoom()}
+                                onClick={() =>
+                                    createRoom(
+                                        this.refs.roomName.value,
+                                        currentUser,
+                                        selected,
+                                        user
+                                    )
+                                }
                             >
                                 CREATE
                             </div>
