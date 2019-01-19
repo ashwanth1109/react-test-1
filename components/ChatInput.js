@@ -1,68 +1,35 @@
-import React from "react";
-import { row, button } from "../styles";
-
-import { connect } from "react-redux";
-
-const mapStateFromProps = state => {
-    return {
-        currentUser: state.currentUser,
-        room: state.rooms[state.room]
-    };
-};
-
-const mapDispatchToProps = dispatch => ({
-    addMessageToRoom: async (message, currentUser, roomId) => {
-        try {
-            await currentUser.sendMessage({
-                text: message,
-                roomId: roomId
-            });
-        } catch (err) {
-            console.error(err);
-        }
-    }
-});
-
-const s = {
-    container: {
-        width: "100%",
-        backgroundColor: "#222",
-        ...row,
-        padding: "30px 20px",
-        boxSizing: "border-box",
-        alignItems: "center"
-    },
-    input: {
-        flex: "1",
-        border: "2px solid #fff",
-        borderRadius: "10px",
-        marginRight: "20px",
-        outline: "none",
-        height: "30px",
-        padding: "5px 10px",
-        color: "#222",
-        fontSize: "20px"
-    }
-};
-
+// ------------------------------------------------------------
+// import dependencies
+// ------------------------------------------------------------
+import { chatInput as s } from "../componentStyles"; // component styles
+import withRedux from "./Redux"; // with redux HOC
+// ------------------------------------------------------------
+// Chat Input Component - to enter new chat message and send
+// issue - cannot convert it to stateless component as refs cannot be applied to stateless
+// ------------------------------------------------------------
 class ChatInput extends React.Component {
-    addMessage = ({ addMessageToRoom, currentUser, room } = this.props) => {
-        addMessageToRoom(this.refs.message.value, currentUser, room.id);
-        this.refs.message.value = "";
-    };
-    render() {
+    render({ addMessageToRoom, currentUser, room, rooms } = this.props) {
         return (
             <div style={s.container}>
+                {/* input message here */}
                 <input
                     type="text"
                     style={s.input}
                     ref="message"
                     placeholder="Enter message . . ."
                 />
+                {/* send button here - adds message to room */}
                 <div
-                    style={button}
+                    style={s.button}
                     className="btn"
-                    onClick={() => this.addMessage()}
+                    onClick={() => {
+                        addMessageToRoom(
+                            this.refs.message.value,
+                            currentUser,
+                            rooms[room].id
+                        );
+                        this.refs.message.value = "";
+                    }}
                 >
                     SEND
                 </div>
@@ -70,8 +37,7 @@ class ChatInput extends React.Component {
         );
     }
 }
-
-export default connect(
-    mapStateFromProps,
-    mapDispatchToProps
-)(ChatInput);
+// ------------------------------------------------------------
+// export with redux HOC - with mapState and mapDispatch
+// ------------------------------------------------------------
+export default withRedux(ChatInput, true, true);
