@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import RoomItem from "./RoomItem";
 
 import { AutoSizer, List } from "react-virtualized";
-import { updateState } from "../actions";
+import { updateState } from "../store";
 
 const mapStateFromProps = state => {
     return {
