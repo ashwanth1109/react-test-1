@@ -1,5 +1,10 @@
-import Document, { Head, Main, NextScript } from "next/document";
-
+// ------------------------------------------------------------
+// import dependencies
+// ------------------------------------------------------------
+import Document, { Head, Main, NextScript } from "next/document"; // Import default Document from Next JS
+// ------------------------------------------------------------
+// Customizing the default Document
+// ------------------------------------------------------------
 class MyDoc extends Document {
     render() {
         return (
@@ -10,16 +15,17 @@ class MyDoc extends Document {
                         name="viewport"
                         content="width=device-width, initial-scale=1, shrink-to-fit=no"
                     />
+                    {/* linking COINY from google fonts */}
                     <link
                         href="https://fonts.googleapis.com/css?family=Coiny"
                         rel="stylesheet"
                     />
-                    {/* Link Progress Bar CSS - NPROGRESS */}
+                    {/* link progress bar CSS - NPROGRESS */}
                     <link
                         href="https://storage.googleapis.com/resource-book/nprogress.min.css"
                         rel="stylesheet"
                     />
-                    {/* GLOBAL STYLES GO HERE */}
+                    {/* global styles go here - also hover, keyframe animations etc. */}
                     <style>{`
                         * {
                             margin: 0;
@@ -32,15 +38,16 @@ class MyDoc extends Document {
                         }
                     `}</style>
                 </Head>
+                {/* Add body styles here */}
                 <body
                     style={{
                         width: "100vw",
                         height: "100vh",
                         backgroundColor: "#222",
-                        color: "#fff",
-                        margin: "0"
+                        color: "#fff"
                     }}
                 >
+                    {/* from next js documentation */}
                     <Main />
                     <NextScript />
                 </body>
@@ -48,5 +55,7 @@ class MyDoc extends Document {
         );
     }
 }
-
+// ------------------------------------------------------------
+// export customized document
+// ------------------------------------------------------------
 export default MyDoc;
