@@ -36,6 +36,18 @@ class MyDoc extends Document {
                             background-color: #fff;
                             color: #222;
                         }
+
+                        @keyframes loadingDot {
+                            0% {
+                                transform: scale(1, 1);
+                            }
+                            50% {
+                                transform: scale(0, 0);
+                            }
+                            100% {
+                                transform: scale(1, 1);
+                            }
+                        }
                     `}</style>
                 </Head>
                 {/* Add body styles here */}
