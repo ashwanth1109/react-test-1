@@ -1,15 +1,12 @@
-import React from "react";
-import { fCenter, title } from "../styles";
-
-const s = {
-    container: {
-        width: "100%",
-        height: "50px",
-        ...fCenter,
-        ...title
-    }
-};
-
+// ------------------------------------------------------------
+// import dependencies
+// ------------------------------------------------------------
+import { header as s } from "../componentStyles";
+// ------------------------------------------------------------
+// Header component
+// ------------------------------------------------------------
 const Header = ({ children }) => <div style={s.container}>{children}</div>;
-
+// ------------------------------------------------------------
+// export memoized header component
+// ------------------------------------------------------------
 export default React.memo(Header);
