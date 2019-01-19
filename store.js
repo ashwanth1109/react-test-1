@@ -24,6 +24,15 @@ export const getDefaultValueForMembers = (initialMembersList = []) => {
 };
 
 // ------------------------------------------------------------
+// common action dispatcher
+// ------------------------------------------------------------
+export const updateState = (dispatch, payload, type) =>
+    dispatch({
+        type: type,
+        payload: payload
+    });
+
+// ------------------------------------------------------------
 // reducers store
 // ------------------------------------------------------------
 const test = (state = 0, action) =>
