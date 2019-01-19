@@ -2,10 +2,9 @@
 // import dependencies
 // ------------------------------------------------------------
 import withLayout from "../components/Layout"; // Layout Higher Order Component
-import Router from "next/router"; // Next Router
 import { users as userIcons } from "../store"; // user data array
 import { index as s } from "../componentStyles"; // component styles
-import { navigateToChat } from "../utilityFunctions"; // function to navigate to chat page
+import { navigateToChat } from "../utilityFunctions"; // utility functions
 
 // ------------------------------------------------------------
 // Index Page Component
@@ -33,7 +32,7 @@ const Index = ({ user, updateState }) => (
         <div
             style={s.button}
             className="btn"
-            onClick={() => navigateToChat(user, Router)}
+            onClick={() => navigateToChat(user)}
         >
             Log into the Channel
         </div>
@@ -41,6 +40,6 @@ const Index = ({ user, updateState }) => (
 );
 
 // ------------------------------------------------------------
-// export with Layout HOC and parameter for Page title
+// export with Layout HOC and parameter for page title
 // ------------------------------------------------------------
 export default withLayout(Index, "Time for Justice");
