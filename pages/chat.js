@@ -8,10 +8,12 @@ import { navigateToIndex, getChatManagerClient } from "../utilityFunctions"; // 
 // import child components
 // ------------------------------------------------------------
 import RoomList from "../components/RoomList"; // shows list of rooms
-import UserList from "../components/UserList"; // shows list of users in room
 import Modal from "../components/Modal"; // modal with create room form
 import ChatMessages from "../components/ChatMessages"; // shows list of messages in room
 import ChatInput from "../components/ChatInput"; // chat input to send new message to chat
+import Loader from "../components/Loader";
+import Header from "../components/Header";
+import CreateRoomForm from "../components/CreateRoomForm";
 
 // ------------------------------------------------------------
 // Chat Page Component
@@ -24,11 +26,17 @@ class Chat extends React.Component {
     async componentDidMount({ user, updateState } = this.props) {
         if (user === null) navigateToIndex();
         else {
-            const chatManager = getChatManagerClient(user);
-            const currentUser = await chatManager.connect();
-            updateState(currentUser, "CURRENT_USER");
-            const rooms = currentUser.rooms;
-            updateState(rooms, "ROOMS");
+            try {
+                updateState(true, "ROOM_LIST_LOADING");
+                const chatManager = getChatManagerClient(user);
+                const currentUser = await chatManager.connect();
+                updateState(currentUser, "CURRENT_USER");
+                const rooms = currentUser.rooms;
+                updateState(rooms, "ROOMS");
+                updateState(false, "ROOM_LIST_LOADING");
+            } catch (err) {
+                console.error(err);
+            }
         }
     }
 
@@ -36,21 +44,28 @@ class Chat extends React.Component {
     // check if user is null, if null render return null
     // else return chat page ui
     // ------------------------------------------------------------
-    render = ({ user } = this.props) =>
+    render = (
+        { user, updateModal, roomListLoading, chatMessagesLoading } = this.props
+    ) =>
         user === null ? null : (
             <div style={s.container}>
                 {/* left portion of window for room list and user list */}
                 <div style={s.userRoomList}>
-                    <RoomList />
-                    <UserList />
+                    <Header>CHAT ROOMS</Header>
+                    {roomListLoading ? <Loader /> : <RoomList />}
+                    <div style={s.addRoom} onClick={() => updateModal(true)}>
+                        Add Room +
+                    </div>
                 </div>
                 {/* right portion of window for chat messages list and chat input */}
                 <div style={s.chatMessages}>
-                    <ChatMessages />
+                    {chatMessagesLoading ? <Loader /> : <ChatMessages />}
                     <ChatInput />
                 </div>
                 {/* modal absolutely positioned */}
-                <Modal />
+                <Modal>
+                    <CreateRoomForm />
+                </Modal>
             </div>
         );
 }
