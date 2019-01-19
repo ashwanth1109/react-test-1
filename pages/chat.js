@@ -1,85 +1,61 @@
-import withLayout from "../components/Layout";
-import Chatkit from "@pusher/chatkit-client";
-import { users } from "../store";
-import Router from "next/router";
-import { row, bg, col } from "../styles";
-import RoomList from "../components/RoomList";
-import UserList from "../components/UserList";
-import Modal from "../components/Modal";
-import ChatMessages from "../components/ChatMessages";
-import ChatInput from "../components/ChatInput";
+// ------------------------------------------------------------
+// import dependencies
+// ------------------------------------------------------------
+import withLayout from "../components/Layout"; // Layout HOC
+import { chat as s } from "../componentStyles"; // chat page styles
+import { navigateToIndex, getChatManagerClient } from "../utilityFunctions"; // utility functions
+// ------------------------------------------------------------
+// import child components
+// ------------------------------------------------------------
+import RoomList from "../components/RoomList"; // shows list of rooms
+import UserList from "../components/UserList"; // shows list of users in room
+import Modal from "../components/Modal"; // modal with create room form
+import ChatMessages from "../components/ChatMessages"; // shows list of messages in room
+import ChatInput from "../components/ChatInput"; // chat input to send new message to chat
 
-const s = {
-    container: {
-        height: "100vh",
-        ...row,
-        margin: "0 auto"
-    },
-    userRoomList: {
-        flex: 1,
-        ...col,
-        borderRight: "1px solid #fff"
-    },
-    chatMessages: {
-        flex: 2.5,
-        ...bg.white,
-        ...col
-    }
-};
-
+// ------------------------------------------------------------
+// Chat Page Component
+// ------------------------------------------------------------
 class Chat extends React.Component {
+    // ------------------------------------------------------------
+    // When component mounts, instantiate chat manager & connect to it
+    // Once connected update currentUser and currentRooms in global state
+    // ------------------------------------------------------------
     async componentDidMount({ user, updateState } = this.props) {
-        console.log(process.env.PUSHER_APP_INSTANCE);
-        console.log(process.env.PUSHER_APP_TOKEN);
-        if (user === null) {
-            Router.push("/");
-        } else {
-            const chatManager = new Chatkit.ChatManager({
-                instanceLocator: process.env.PUSHER_APP_INSTANCE,
-                userId: users[user],
-                tokenProvider: new Chatkit.TokenProvider({
-                    url: process.env.PUSHER_APP_TOKEN
-                })
-            });
-
+        if (user === null) navigateToIndex();
+        else {
+            const chatManager = getChatManagerClient(user);
             const currentUser = await chatManager.connect();
             updateState(currentUser, "CURRENT_USER");
             const rooms = currentUser.rooms;
             updateState(rooms, "ROOMS");
-            // const currentRoom = await currentUser.subscribeToRoom({
-            //     roomId: process.env.LEAGUE_ROOM,
-            //     messageLimit: 100,
-            //     hooks: {
-            //         onMessage: message => {
-            //             this.setState({
-            //                 messages: [...messages, message]
-            //             });
-            //         }
-            //     }
-            // });
-            // updateState(currentRoom, "CURRENT_ROOM");
         }
     }
 
-    render({ user } = this.props) {
-        if (user === null) {
-            return null;
-        } else {
-            return (
-                <div style={s.container}>
-                    <div style={s.userRoomList}>
-                        <RoomList />
-                        <UserList />
-                    </div>
-                    <div style={s.chatMessages}>
-                        <ChatMessages />
-                        <ChatInput />
-                    </div>
-                    <Modal />
+    // ------------------------------------------------------------
+    // check if user is null, if null render return null
+    // else return chat page ui
+    // ------------------------------------------------------------
+    render = ({ user } = this.props) =>
+        user === null ? null : (
+            <div style={s.container}>
+                {/* left portion of window for room list and user list */}
+                <div style={s.userRoomList}>
+                    <RoomList />
+                    <UserList />
                 </div>
-            );
-        }
-    }
+                {/* right portion of window for chat messages list and chat input */}
+                <div style={s.chatMessages}>
+                    <ChatMessages />
+                    <ChatInput />
+                </div>
+                {/* modal absolutely positioned */}
+                <Modal />
+            </div>
+        );
 }
 
+// ------------------------------------------------------------
+// export chat page with layout and page title
+// ------------------------------------------------------------
 export default withLayout(Chat, "The League Channel");
