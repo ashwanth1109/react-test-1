@@ -8,7 +8,7 @@ import { users } from "./store"; // user data array
 // import components
 // ------------------------------------------------------------
 import Message from "./components/Message"; // Message Component for individual messages
-
+import RoomItem from "./components/RoomItem";
 // ------------------------------------------------------------
 // component utility functions
 // ------------------------------------------------------------
@@ -34,5 +34,12 @@ export const getChatManagerClient = user => {
 export const renderChatMessages = ({ key, index, style }, messages) => (
     <div key={key} style={style}>
         <Message message={messages[index]} />
+    </div>
+);
+
+// rowRenderer function for react virtualized list to display room list
+export const renderRoomList = ({ key, index, style }, rooms) => (
+    <div key={key} style={style}>
+        <RoomItem roomItem={rooms[index]} id={index} />
     </div>
 );
