@@ -10,7 +10,7 @@ import {
     row,
     bg,
     col,
-    button,
+    btn,
     center
 } from "./styles";
 
@@ -70,14 +70,32 @@ export const chat = {
     },
     chatMessages: {
         flex: 2.5,
-        ...bg.white,
+        backgroundColor: "#666",
         ...col
+    },
+    addRoom: {
+        height: "50px",
+        width: "90%",
+        margin: "27px auto",
+        backgroundColor: "#fff",
+        ...title,
+        color: "#222",
+        ...fCenter,
+        cursor: "pointer"
     }
 };
 
 // ------------------------------------------------------------
 // component styling
 // ------------------------------------------------------------
+// button component
+export const button = {
+    container: {
+        ...btn,
+        margin: "20px 10px"
+    }
+};
+
 // chat input component
 export const chatInput = {
     container: {
@@ -100,7 +118,7 @@ export const chatInput = {
         fontSize: "20px"
     },
     button: {
-        ...button
+        ...btn
     }
 };
 
@@ -114,6 +132,32 @@ export const chatMessages = {
     }
 };
 
+// create room form component
+export const createRoomForm = {
+    title: {
+        ...smallText
+    },
+    inputRow: {
+        ...row,
+        margin: "20px 0"
+    },
+    label: {
+        ...smallText,
+        marginRight: "20px"
+    },
+    input: {
+        width: "200px",
+        outline: "none",
+        padding: "3px 10px",
+        fontSize: "16px"
+    },
+    buttons: {
+        ...row,
+        width: "100%",
+        justifyContent: "center"
+    }
+};
+
 // header component
 export const header = {
     container: {
@@ -121,6 +165,30 @@ export const header = {
         height: "50px",
         ...fCenter,
         ...title
+    }
+};
+
+// loader component
+export const loader = {
+    container: {
+        flex: 1,
+        ...fCenter
+    },
+    loader: {
+        width: "100px",
+        height: "35px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "row"
+    },
+    dot: {
+        width: "8px",
+        height: "8px",
+        borderRadius: "4px",
+        backgroundColor: "#FFF",
+        marginLeft: "3px",
+        marginRight: "3px"
     }
 };
 
@@ -174,25 +242,50 @@ export const modal = {
         ...col,
         alignItems: "center",
         padding: "20px"
+    }
+};
+
+// room item component
+export const roomItem = {
+    container: {
+        width: "100%",
+        boxSizing: "border-box",
+        margin: "3px auto",
+        height: "80px",
+        ...col,
+        ...center,
+        borderRadius: "10px",
+        cursor: "pointer",
+        position: "relative",
+        backgroundColor: "#222"
     },
-    modalTitle: {
-        ...smallText
+    selected: {
+        ...bg.white,
+        color: "#222"
     },
-    modalRow: {
-        ...row,
-        margin: "20px 0"
+    roomName: {
+        fontSize: "24px",
+        marginBottom: "10px"
+    }
+};
+
+// room list component
+export const roomList = {
+    container: {
+        flex: 3,
+        ...col
     },
-    modalLabel: {
-        ...smallText,
-        marginRight: "20px"
-    },
-    modalInput: {
-        width: "200px",
-        outline: "none",
-        padding: "3px 10px",
-        fontSize: "16px"
-    },
-    memberGrid: {
+    roomList: {
+        flex: 1,
+        backgroundColor: "#444",
+        boxSizing: "border-box",
+        padding: "20px 0"
+    }
+};
+
+// user grid component
+export const userGrid = {
+    container: {
         marginTop: "10px",
         width: "60%",
         display: "grid",
@@ -211,44 +304,5 @@ export const modal = {
     },
     unselected: {
         border: "2px solid #ffffff00"
-    },
-    buttonContainer: {
-        ...row,
-        width: "100%",
-        justifyContent: "center"
-    },
-    button: {
-        ...button,
-        margin: "20px 10px"
-    }
-};
-
-// room item component
-export const roomItem = {
-    container: {
-        width: "90%",
-        margin: "10px auto",
-        height: "80px",
-        ...col,
-        ...center,
-        border: "2px solid #fff",
-        borderRadius: "10px",
-        cursor: "pointer",
-        position: "relative"
-    },
-    selected: {
-        ...bg.white,
-        color: "#222"
-    },
-    roomName: {
-        fontSize: "24px",
-        marginBottom: "10px"
-    },
-    delete: {
-        position: "absolute",
-        width: "30px",
-        height: "30px",
-        top: "0px",
-        right: "0px"
     }
 };
