@@ -2,7 +2,7 @@ import React from "react";
 import { fScreen, fCenter, col, smallText, row, button } from "../styles";
 
 import { connect } from "react-redux";
-import { updateState } from "../actions";
+import { updateState } from "../store";
 
 import { users, getDefaultValueForMembers } from "../store";
 

@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { connect } from "react-redux";
-import { updateState } from "../actions";
+import { updateState } from "../store";
 import NProgress from "nprogress";
 import Router from "next/router";
 
