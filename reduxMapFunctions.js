@@ -1,6 +1,9 @@
 import { updateState, getDefaultValueForMembers, users } from "./store";
 
-export const mapStateFromProps = state => state;
+export const mapStateFromProps = state => {
+    // console.log(state);
+    return state;
+};
 
 export const mapDispatchToProps = dispatch => ({
     // send message to room [ChatInput]
@@ -22,6 +25,9 @@ export const mapDispatchToProps = dispatch => ({
             getDefaultValueForMembers(),
             "MEMBERS_TO_ADD_TO_ROOM"
         );
+    },
+    updateModal: modal => {
+        updateState(dispatch, modal, "MODAL");
     },
     toggleSelected: (id, members) => {
         members[id] = !members[id];
@@ -60,18 +66,7 @@ export const mapDispatchToProps = dispatch => ({
     updateMessages: messages => {
         updateState(dispatch, messages, "MESSAGES");
     },
-    deleteRoom: async (roomId, currentUser) => {
-        try {
-            await currentUser.deleteRoom({
-                roomId: roomId
-            });
-            const rooms = currentUser.rooms;
-            updateState(dispatch, rooms, "ROOMS");
-        } catch (err) {
-            console.log(`Error in deleting room`);
-        }
-    },
-    // common updateState function - replace it
+    // common updateState function
     updateState: (payload, type) => {
         updateState(dispatch, payload, type);
     }
