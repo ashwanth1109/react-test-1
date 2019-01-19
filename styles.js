@@ -46,7 +46,7 @@ export const bg = {
     }
 };
 
-export const button = {
+export const btn = {
     width: "100px",
     height: "35px",
     ...fCenter,
