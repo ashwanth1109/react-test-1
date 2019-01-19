@@ -1,6 +1,6 @@
 import React from "react";
 import { fCenter, bg, col, center } from "../styles";
-import { updateState } from "../actions";
+import { updateState } from "../store";
 import { connect } from "react-redux";
 
 const mapStateFromProps = state => {
