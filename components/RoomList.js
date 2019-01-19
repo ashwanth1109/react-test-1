@@ -43,7 +43,7 @@ class RoomList extends React.Component {
     rowRenderer = ({ key, index, style }, { rooms } = this.props) => {
         return (
             <div key={key} style={style}>
-                <RoomItem room={rooms[index]} id={index} />
+                <RoomItem roomItem={rooms[index]} id={index} />
             </div>
         );
     };
