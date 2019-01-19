@@ -63,6 +63,12 @@ const modal = (state = false, action) =>
 const membersToAddToRoom = (state = getDefaultValueForMembers(), action) =>
     action.type === "MEMBERS_TO_ADD_TO_ROOM" ? [...action.payload] : state;
 
+const roomListLoading = (state = false, action) =>
+    action.type === "ROOM_LIST_LOADING" ? action.payload : state;
+
+const chatMessagesLoading = (state = false, action) =>
+    action.type === "CHAT_MESSAGES_LOADING" ? action.payload : state;
+
 export default combineReducers({
     test,
     user,
@@ -72,5 +78,7 @@ export default combineReducers({
     currentRoom,
     messages,
     modal,
-    membersToAddToRoom
+    membersToAddToRoom,
+    roomListLoading,
+    chatMessagesLoading
 });
