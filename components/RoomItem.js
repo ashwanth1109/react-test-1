@@ -2,9 +2,12 @@ import { roomItem as s } from "../componentStyles";
 import withRedux from "./Redux";
 
 class RoomItem extends React.Component {
-    changeRoom = async ({ id, rooms, currentUser } = this.props) => {
-        this.props.updateRoom(id);
+    changeRoom = async (
+        { id, rooms, currentUser, updateState } = this.props
+    ) => {
+        updateState(id, "UPDATE_ROOM");
         try {
+            updateState(true, "CHAT_MESSAGES_LOADING");
             this.props.updateMessages([]);
             await currentUser.fetchMessages({
                 roomId: rooms[id].id,
@@ -24,12 +27,13 @@ class RoomItem extends React.Component {
                     }
                 }
             });
+            updateState(false, "CHAT_MESSAGES_LOADING");
         } catch (err) {
             console.error(err);
         }
     };
 
-    render = ({ roomItem, room, id, deleteRoom, currentUser } = this.props) => {
+    render = ({ roomItem, room, id } = this.props) => {
         return (
             <div
                 style={{
@@ -40,16 +44,6 @@ class RoomItem extends React.Component {
             >
                 <div style={s.roomName}>{roomItem.name}</div>
                 <div>Created by: {roomItem.createdByUserId}</div>
-                {room === id ? (
-                    <img
-                        src="/static/delete.svg"
-                        style={s.delete}
-                        alt="delete"
-                        onClick={() => {
-                            deleteRoom(roomItem.id, currentUser);
-                        }}
-                    />
-                ) : null}
             </div>
         );
     };
